@@ -39,6 +39,9 @@ $router->group(['prefix' => '/api'], function () use ($router) {
 
         // Excluir uma série
         $router->delete('/{id}', 'SeriesController@destroy');
+        
+        // Buscar todos os episódios de uma série
+        $router->get('/{serieId}/episodios', 'EpisodiosController@buscaPorSerie');
 
     });
 

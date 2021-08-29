@@ -3,76 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Episodio;
-use Illuminate\Http\Request;
 
-class EpisodiosController extends Controller
+class EpisodiosController extends BaseController
 {
-    public function index()
+    public function __construct()
     {
-        return Episodio::all();
+        $this->classe = Episodio::class;
     }
 
-    public function show(int $id)
+    public function buscaPorSerie(int $serieId)
     {
-        $episodio = Episodio::find($id);
-
-        // Caso não encontre o episódio
-        if (is_null($episodio)) {
-            return response()->json([
-                'error' => 'Recurso não encontrado.',
-                'code' => 404
-            ]);
-        }
-
-        return response()->json(
-            Episodio::find($id),
-            201
-        );
-    }
-
-    public function store(Request $request)
-    {
-        return response()->json(
-            Episodio::create($request->all()),
-            201
-        );
-    }
-
-    public function update(int $id, Request $request)
-    {
-        $episodio = Episodio::find($id);
-
-        // Caso não encontre o episódio
-        if (is_null($episodio)) {
-            return response()->json([
-                'error' => 'Recurso não encontrado.',
-                'code' => 404
-            ]);
-        }
-
-        // Atualizar a episódio
-        $episodio->fill($request->all());
-        $episodio->save();
-
-        return response()->json(
-            $episodio,
-            201
-        );
-    }
-
-    
-    public function destroy(int $id)
-    {
-        $quantidadeDeRecursosRemovidos = Episodio::destroy($id);
-
-        // Caso não encontre o episódio
-        if ($quantidadeDeRecursosRemovidos === 0) {
-            return response()->json([
-                'error' => 'Recurso não encontrado.',
-                'code' => 404
-            ]);
-        }
-
-        return response()->json('', 204);
+        return Episodio::query()
+            ->where('serie_id', $serieId)
+            ->get();
     }
 }
